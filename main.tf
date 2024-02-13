@@ -101,6 +101,16 @@ resource "azurerm_resource_group" "static-site-rg" {
   location = "eastus"
 }
 
+data "azuread_service_principal" "static-site-sp" {
+  display_name = var.service-principal
+}
+
+resource "azurerm_role_assignment" "static-site-rg-role" {
+  scope                = azurerm_resource_group.static-site-rg.id
+  role_definition_name = "Contributor"
+  principal_id         = data.azuread_service_principal.static-site-sp.object_id
+}
+
 resource "azurerm_storage_account" "static-site-sa" {
   name                      = "${var.env}0static0site0sa0${random_string.suffix.result}"
   resource_group_name       = azurerm_resource_group.static-site-rg.name

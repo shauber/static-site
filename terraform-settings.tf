@@ -12,5 +12,9 @@ terraform {
       source  = "vancluever/acme"
       version = "~> 2.0"
     }
+    azuread = {
+      source  = "hashicorp/azuread"
+      version = "~> 2.47.0"
+    }
   }
 }

@@ -5,7 +5,7 @@ variable "env" {
 }
 
 variable "acme-email" {
-  type=string
+  type    = string
   default = "test@example.com"
 }
 
@@ -26,4 +26,9 @@ variable "index-file" {
 variable "error-file" {
   type    = string
   default = "404.html"
+}
+
+variable "service-principal" {
+  type    = string
+  default = ""
 }
