@@ -30,5 +30,12 @@ variable "error-file" {
 
 variable "service-principal" {
   type    = string
-  default = ""
+}
+
+variable "keyvault-name" {
+  type = string
+}
+
+variable "kv-rg" {
+  type = string
 }

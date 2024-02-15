@@ -167,7 +167,7 @@ resource "azurerm_cdn_endpoint_custom_domain" "www-static-site-com" {
   host_name       = "www.${var.domain-name}"
 
   user_managed_https {
-    key_vault_certificate_id = azurerm_key_vault_certificate.cert.id
+    key_vault_secret_id = azurerm_key_vault_certificate.cert.id
   }
 
   depends_on = [namecheap_domain_records.static-site-dns]
@@ -178,7 +178,7 @@ resource "azurerm_cdn_endpoint_custom_domain" "static-site-com" {
   cdn_endpoint_id = azurerm_cdn_endpoint.static-site-cdn-endpoint.id
   host_name       = var.domain-name
   user_managed_https {
-    key_vault_certificate_id = azurerm_key_vault_certificate.cert.id
+    key_vault_secret_id = azurerm_key_vault_certificate.cert.id
   }
 
   depends_on = [namecheap_domain_records.static-site-dns]
