@@ -57,8 +57,8 @@ resource "namecheap_domain_records" "static-site-dns" {
 
 # Lets Encrypt Stuff
 data "azurerm_key_vault" "certs" {
-  name                = "acme-cdn-certs"
-  resource_group_name = "shared-resources"
+  name                = var.keyvault-name
+  resource_group_name = var.kv-rg
 }
 
 resource "tls_private_key" "private_key" {
