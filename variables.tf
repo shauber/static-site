@@ -29,7 +29,7 @@ variable "error-file" {
 }
 
 variable "service-principal" {
-  type    = string
+  type = string
 }
 
 variable "keyvault-name" {
