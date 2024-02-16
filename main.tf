@@ -26,13 +26,6 @@ resource "namecheap_domain_records" "static-site-dns" {
     ttl      = 60
   }
 
-  # record {
-  #   hostname = "@"
-  #   type = "URL301"
-  #   address = "https://www.weirdalyzer.com"
-  #   ttl = 60
-  # }
-
   record {
     hostname = "@"
     type     = "ALIAS"
@@ -111,6 +104,12 @@ resource "azurerm_role_assignment" "static-site-rg-role" {
   principal_id         = data.azuread_service_principal.static-site-sp.object_id
 }
 
+resource "azurerm_role_assignment" "cdn-role" {
+  scope                = azurerm_cdn_profile.static-site-cdn-profile.id
+  role_definition_name = "Contributor"
+  principal_id         = data.azuread_service_principal.static-site-sp.object_id
+}
+
 resource "azurerm_storage_account" "static-site-sa" {
   name                      = "${var.env}0static0site0sa0${random_string.suffix.result}"
   resource_group_name       = azurerm_resource_group.static-site-rg.name
@@ -167,7 +166,7 @@ resource "azurerm_cdn_endpoint_custom_domain" "www-static-site-com" {
   host_name       = "www.${var.domain-name}"
 
   user_managed_https {
-    key_vault_secret_id = azurerm_key_vault_certificate.cert.id
+    key_vault_secret_id = azurerm_key_vault_certificate.cert.secret_id
   }
 
   depends_on = [namecheap_domain_records.static-site-dns]
@@ -178,7 +177,7 @@ resource "azurerm_cdn_endpoint_custom_domain" "static-site-com" {
   cdn_endpoint_id = azurerm_cdn_endpoint.static-site-cdn-endpoint.id
   host_name       = var.domain-name
   user_managed_https {
-    key_vault_secret_id = azurerm_key_vault_certificate.cert.id
+    key_vault_secret_id = azurerm_key_vault_certificate.cert.secret_id
   }
 
   depends_on = [namecheap_domain_records.static-site-dns]
