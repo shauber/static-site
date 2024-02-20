@@ -138,12 +138,6 @@ resource "azurerm_cdn_profile" "static-site-cdn-profile" {
   sku                 = "Standard_Microsoft"
 }
 
-resource "azurerm_role_assignment" "cdn-manager" {
-  scope = azurerm_cdn_profile.static-site-cdn-profile.id
-  role_definition_name = "CDN Profile Contributor"
-  principal_id = data.azuread_service_principal.static-site-sp.object_id
-}
-
 resource "azurerm_cdn_endpoint" "static-site-cdn-endpoint" {
   name                = "${var.env}-static-site-ce-${random_string.suffix.result}"
   profile_name        = azurerm_cdn_profile.static-site-cdn-profile.name
