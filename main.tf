@@ -130,14 +130,14 @@ resource "azurerm_storage_blob" "blobs" {
   content_type           = lookup(tomap(local.mime_types), element(split(".", each.key), length(split(".", each.key)) - 1))
 }
 
-data "azurerm_cdn_profile" "name" {
+data "azurerm_cdn_profile" "static-site-cdn-profile" {
   name                = var.cdn_profile_name
   resource_group_name = var.cdn_profile_rg_name
 }
 
 resource "azurerm_cdn_endpoint" "static-site-cdn-endpoint" {
   name                = "${var.env}-static-site-ce-${random_string.suffix.result}"
-  profile_name        = azurerm_cdn_profile.static-site-cdn-profile.name
+  profile_name        = data.azurerm_cdn_profile.static-site-cdn-profile.name
   location            = azurerm_resource_group.static-site-rg.location
   resource_group_name = azurerm_resource_group.static-site-rg.name
 
