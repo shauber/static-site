@@ -39,3 +39,11 @@ variable "keyvault-name" {
 variable "kv-rg" {
   type = string
 }
+
+variable "cdn_profile_name" {
+  type = string
+}
+
+variable "cdn_profile_rg_name" {
+  type = string
+}
