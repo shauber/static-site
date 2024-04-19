@@ -40,6 +40,10 @@ variable "kv-rg" {
   type = string
 }
 
+variable "site-rg-name" {
+  type = string
+}
+
 variable "cdn_profile_name" {
   type = string
 }
