@@ -93,12 +93,8 @@ data "azurerm_resource_group" "static-site-rg" {
   name     = var.site-rg-name
 }
 
-data "azuread_service_principal" "static-site-sp" {
-  display_name = var.service-principal
-}
-
 resource "azurerm_storage_account" "static-site-sa" {
-  name                      = "${var.env}0static0site0sa0${random_string.suffix.result}"
+  name                      = "${var.env}0${local.safe-domain-name}0${random_string.suffix.result}"
   resource_group_name       = data.azurerm_resource_group.static-site-rg.name
   location                  = "eastus"
   account_tier              = "Standard"
@@ -129,7 +125,7 @@ data "azurerm_cdn_profile" "static-site-cdn-profile" {
 }
 
 resource "azurerm_cdn_endpoint" "static-site-cdn-endpoint" {
-  name                = "${var.env}-static-site-ce-${random_string.suffix.result}"
+  name                = "${var.env}-${local.safe-domain-name}-${random_string.suffix.result}"
   profile_name        = data.azurerm_cdn_profile.static-site-cdn-profile.name
   location            = data.azurerm_resource_group.static-site-rg.location
   resource_group_name = data.azurerm_resource_group.static-site-rg.name

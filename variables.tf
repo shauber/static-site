@@ -28,10 +28,6 @@ variable "error-file" {
   default = "404.html"
 }
 
-variable "service-principal" {
-  type = string
-}
-
 variable "keyvault-name" {
   type = string
 }
