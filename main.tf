@@ -94,7 +94,7 @@ data "azurerm_resource_group" "static-site-rg" {
 }
 
 resource "azurerm_storage_account" "static-site-sa" {
-  name                      = "${var.env}0${substr(replace(local.safe-domain-name,"-", ""),0,(24-length(var.env)-length(random_string.suffix.result)))}0${random_string.suffix.result}"
+  name                      = "${var.env}0${substr(replace(local.safe-domain-name,"-", ""),0,(24-2-length(var.env)-length(random_string.suffix.result)))}0${random_string.suffix.result}"
   resource_group_name       = data.azurerm_resource_group.static-site-rg.name
   location                  = "eastus"
   account_tier              = "Standard"
