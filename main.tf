@@ -162,7 +162,7 @@ resource "azurerm_cdn_endpoint_custom_domain" "www-static-site-com" {
     key_vault_secret_id = azurerm_key_vault_certificate.cert.secret_id
   }
 
-  depends_on = [namecheap_domain_records.static-site-dns]
+  depends_on = [namecheap_domain_records.static-site-www]
 }
 
 resource "azurerm_cdn_endpoint_custom_domain" "static-site-com" {
@@ -173,5 +173,5 @@ resource "azurerm_cdn_endpoint_custom_domain" "static-site-com" {
     key_vault_secret_id = azurerm_key_vault_certificate.cert.secret_id
   }
 
-  depends_on = [namecheap_domain_records.static-site-dns]
+  depends_on = [namecheap_domain_records.static-site-root]
 }
