@@ -15,9 +15,9 @@ locals {
   }
 }
 
-resource "namecheap_domain_records" "static-site-dns" {
+resource "namecheap_domain_records" "static-site-www" {
   domain = var.domain-name
-  mode   = "OVERWRITE"
+  mode   = "MERGE"
 
   record {
     hostname = "www"
@@ -25,6 +25,11 @@ resource "namecheap_domain_records" "static-site-dns" {
     address  = "${azurerm_cdn_endpoint.static-site-cdn-endpoint.name}.azureedge.net"
     ttl      = 60
   }
+}
+
+resource "namecheap_domain_records" "static-site-root" {
+  domain = var.domain-name
+  mode   = "MERGE"
 
   record {
     hostname = "@"
@@ -32,14 +37,22 @@ resource "namecheap_domain_records" "static-site-dns" {
     address  = "${azurerm_cdn_endpoint.static-site-cdn-endpoint.name}.azureedge.net"
     ttl      = 60
   }
+}
 
+resource "namecheap_domain_records" "static-site-asverify" {
+  domain = var.domain-name
+  mode   = "MERGE"
   record {
     hostname = "asverify"
     type     = "CNAME"
     address  = "asverify.${azurerm_cdn_endpoint.static-site-cdn-endpoint.name}.azureedge.net"
     ttl      = 60
   }
+}
 
+resource "namecheap_domain_records" "static-site-cdnverify" {
+  domain = var.domain-name
+  mode   = "MERGE"
   record {
     hostname = "cdnverify"
     type     = "CNAME"
@@ -90,11 +103,11 @@ resource "random_string" "suffix" {
 }
 
 data "azurerm_resource_group" "static-site-rg" {
-  name     = var.site-rg-name
+  name = var.site-rg-name
 }
 
 resource "azurerm_storage_account" "static-site-sa" {
-  name                      = "${var.env}0${substr(replace(local.safe-domain-name,"-", ""),0,(24-2-length(var.env)-length(random_string.suffix.result)))}0${random_string.suffix.result}"
+  name                      = "${var.env}0${substr(replace(local.safe-domain-name, "-", ""), 0, (24 - 2 - length(var.env) - length(random_string.suffix.result)))}0${random_string.suffix.result}"
   resource_group_name       = data.azurerm_resource_group.static-site-rg.name
   location                  = "eastus"
   account_tier              = "Standard"
