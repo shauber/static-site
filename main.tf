@@ -151,6 +151,19 @@ resource "azurerm_cdn_endpoint" "static-site-cdn-endpoint" {
     name      = "static-site-main-endpoint"
     host_name = azurerm_storage_account.static-site-sa.primary_web_host
   }
+
+	delivery_rule {
+		name = "HttpsRedirect"
+
+		request_scheme_condition {
+			match_values = "Http"
+		}
+
+		url_redirect_action {
+			redirect_type = "PermanentRedirect"
+			protocol = "Https"
+		}
+	}
 }
 
 resource "azurerm_cdn_endpoint_custom_domain" "www-static-site-com" {
