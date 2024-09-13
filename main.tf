@@ -113,7 +113,7 @@ resource "azurerm_storage_account" "static-site-sa" {
   account_tier              = "Standard"
   account_kind              = "StorageV2"
   account_replication_type  = "LRS"
-  enable_https_traffic_only = true
+  https_traffic_only_enabled = true
 
   static_website {
     index_document     = var.index-file
@@ -157,7 +157,7 @@ resource "azurerm_cdn_endpoint" "static-site-cdn-endpoint" {
 		order = 1
 
 		request_scheme_condition {
-			match_values = toset("HTTP")
+			match_values = "HTTP"
 		}
 
 		url_redirect_action {
