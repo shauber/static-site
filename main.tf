@@ -154,9 +154,10 @@ resource "azurerm_cdn_endpoint" "static-site-cdn-endpoint" {
 
 	delivery_rule {
 		name = "HttpsRedirect"
+		order = 1
 
 		request_scheme_condition {
-			match_values = "Http"
+			match_values = toset("HTTP")
 		}
 
 		url_redirect_action {
