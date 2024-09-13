@@ -113,7 +113,7 @@ resource "azurerm_storage_account" "static-site-sa" {
   account_tier              = "Standard"
   account_kind              = "StorageV2"
   account_replication_type  = "LRS"
-  https_traffic_only_enabled = true
+  enable_https_traffic_only = true
 
   static_website {
     index_document     = var.index-file
