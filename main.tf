@@ -134,7 +134,7 @@ resource "azurerm_cdn_endpoint" "static-site-cdn-endpoint" {
 
   origin_host_header = azurerm_storage_account.static-site-sa.primary_web_host
 
-  is_http_allowed = false
+  is_http_allowed = true
 
   origin {
     name      = "static-site-main-endpoint"
