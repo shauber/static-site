@@ -8,6 +8,10 @@ terraform {
       source  = "namecheap/namecheap"
       version = ">= 2.0.0"
     }
+    vultr = {
+      source  = "vultr/vultr"
+      version = ">= 2.22"
+    }
     acme = {
       source  = "vancluever/acme"
       version = "~> 2.0"

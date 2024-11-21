@@ -15,41 +15,6 @@ locals {
   }
 }
 
-resource "namecheap_domain_records" "static-site-www" {
-  domain = var.domain-name
-  mode   = "MERGE"
-
-  record {
-    hostname = "www"
-    type     = "CNAME"
-    address  = "${azurerm_cdn_endpoint.static-site-cdn-endpoint.name}.azureedge.net"
-    ttl      = 60
-  }
-}
-
-resource "namecheap_domain_records" "static-site-root" {
-  domain = var.domain-name
-  mode   = "MERGE"
-
-  record {
-    hostname = "@"
-    type     = "ALIAS"
-    address  = "${azurerm_cdn_endpoint.static-site-cdn-endpoint.name}.azureedge.net"
-    ttl      = 60
-  }
-}
-
-resource "namecheap_domain_records" "static-site-cdnverify" {
-  domain = var.domain-name
-  mode   = "MERGE"
-  record {
-    hostname = "cdnverify"
-    type     = "CNAME"
-    address  = "cdnverify.${azurerm_cdn_endpoint.static-site-cdn-endpoint.name}.azureedge.net"
-    ttl      = 60
-  }
-}
-
 # Lets Encrypt Stuff
 data "azurerm_key_vault" "certs" {
   name                = var.keyvault-name
@@ -71,7 +36,7 @@ resource "acme_certificate" "certificate" {
   subject_alternative_names = ["www.${var.domain-name}"]
 
   dns_challenge {
-    provider = "namecheap"
+    provider = var.dns_challenge_provider
   }
 }
 
@@ -165,7 +130,7 @@ resource "azurerm_cdn_endpoint_custom_domain" "www-static-site-com" {
     key_vault_secret_id = azurerm_key_vault_certificate.cert.secret_id
   }
 
-  depends_on = [namecheap_domain_records.static-site-www]
+  depends_on = [vultr_dns_record.static-site-www]
 }
 
 resource "azurerm_cdn_endpoint_custom_domain" "static-site-com" {
@@ -176,5 +141,5 @@ resource "azurerm_cdn_endpoint_custom_domain" "static-site-com" {
     key_vault_secret_id = azurerm_key_vault_certificate.cert.secret_id
   }
 
-  depends_on = [namecheap_domain_records.static-site-root]
+  depends_on = [vultr_dns_record.static-site-root]
 }

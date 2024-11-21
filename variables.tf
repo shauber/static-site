@@ -47,3 +47,12 @@ variable "cdn_profile_name" {
 variable "cdn_profile_rg_name" {
   type = string
 }
+
+variable "dns_providers" {
+  type = list(string)
+  default = [ "vultr" ]
+}
+
+variable "dns_challenge_provider" {
+  type = string
+}
