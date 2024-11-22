@@ -133,13 +133,3 @@ resource "azurerm_cdn_endpoint_custom_domain" "www-static-site-com" {
   depends_on = [vultr_dns_record.static-site-www]
 }
 
-resource "azurerm_cdn_endpoint_custom_domain" "static-site-com" {
-  name            = local.safe-domain-name
-  cdn_endpoint_id = azurerm_cdn_endpoint.static-site-cdn-endpoint.id
-  host_name       = var.domain-name
-  user_managed_https {
-    key_vault_secret_id = azurerm_key_vault_certificate.cert.secret_id
-  }
-
-  depends_on = [vultr_dns_record.static-site-root]
-}
